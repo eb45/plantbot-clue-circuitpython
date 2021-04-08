@@ -26,6 +26,7 @@ from adafruit_ble_adafruit.temperature_service import TemperatureService
 from adafruit_ble_adafruit.tone_service import ToneService
 from adafruit_ble_adafruit.gyroscope_service import GyroscopeService
 from drive_service import DriveService
+from exploration_service import ExplorationService
 
 print("Please connect...")
 
@@ -69,6 +70,8 @@ tone_svc = ToneService()
 
 drive_svc = DriveService()
 kit = ServoKit(channels=16)
+
+exploration_svc = ExplorationService()
 
 ble = BLERadio()
 # The Web Bluetooth dashboard identifies known boards by their
@@ -145,7 +148,7 @@ while True:
                     kit.continuous_servo[1].throttle = 1
                     time.sleep(1)
                     kit.continuous_servo[0].throttle = 0.06
-                    kit.continuous_servo[1].throttle = 0.06  
+                    kit.continuous_servo[1].throttle = 0.06
                 if r==1:
                     kit.continuous_servo[2].throttle = 1
                     kit.continuous_servo[3].throttle = -1
@@ -160,6 +163,15 @@ while True:
                     kit.continuous_servo[3].throttle = 0.1
                 print(f"f={f}, b={b}, l={l}, r={r}") #change this to actual servo move
         last_drive = drive
+
+        exploration = exploration_svc.exploration
+        if exploration is not None:
+            go, stop = exploration
+            if go==1:
+                print("hi zoom zoom")
+            if stop==1:
+                print("STOP")
+        last_exploration = exploration
 
         tone = tone_svc.tone
         if tone is not None:
