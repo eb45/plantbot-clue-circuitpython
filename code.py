@@ -168,9 +168,19 @@ while True:
         if exploration is not None:
             go, stop = exploration
             if go==1:
-                print("hi zoom zoom")
+                average = sum(clue.color)/len(clue.color)
+                while (average<5000):
+                    kit.continuous_servo[0].throttle = 1
+                    kit.continuous_servo[1].throttle = -1
+                    print("not enough:(")
+                    average = sum(clue.color)/len(clue.color)
+                print("hi light!")
+                kit.continuous_servo[0].throttle = 0.06
+                kit.continuous_servo[1].throttle = 0.06
             if stop==1:
                 print("STOP")
+                kit.continuous_servo[0].throttle = 0.06
+                kit.continuous_servo[1].throttle = 0.06
         last_exploration = exploration
 
         tone = tone_svc.tone
